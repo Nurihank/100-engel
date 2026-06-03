@@ -7,12 +7,12 @@
 
 ## 1. Proje Kurulumu ve Başlangıç Ayarları
 
-- [ ] **Unity Hub'dan yeni proje oluştur**
+- [x] **Unity Hub'dan yeni proje oluştur**
   - Unity Hub → New Project → **3D (URP)** şablonunu seç.
   - Proje adını `100-Engel` olarak yaz, kayıt konumunu belirle ve "Create project" tıkla.
   - URP (Universal Render Pipeline) seçmemizin sebebi: Hafif, performanslı ve mobil uyumlu.
 
-- [ ] **Proje klasör yapısını oluştur**
+- [x] **Proje klasör yapısını oluştur**
   - Project panelinde `Assets` klasörünün altına şu klasörleri oluştur (sağ tık → Create → Folder):
     ```
     Assets/
@@ -27,7 +27,7 @@
     └── Audio/            → Ses dosyaları (isteğe bağlı)
     ```
 
-- [ ] **Asset Store'dan ücretsiz paketleri indir ve import et**
+- [x] **Asset Store'dan ücretsiz paketleri indir ve import et**
   - Unity menüsünden `Window → Package Manager` aç.
   - Şu paketleri ara ve import et:
     - **Starter Assets – Third Person Character Controller** (Karakter kontrolü + Cinemachine kamera)
@@ -89,30 +89,24 @@
   - Bir materyal oluştur (`Assets/Materials` → Create → Material), yeşil veya mavi renk ver, küpün üstüne sürükle.
   - Bu platformun üstüne karakteri yerleştir (Y pozisyonunu platformun üst yüzeyine ayarla).
 
-- [ ] **Engel türlerini tasarla ve Prefab olarak kaydet**
-  - Şu engel tiplerini oluştur (her birini ayrı prefab yap):
-    1. **Boşluk (Gap):** İki platform arasında zıplanması gereken boşluk. İki küp arasında mesafe bırak.
-    2. **Hareketli Platform:** Bir küp oluştur, `MovingPlatform.cs` scripti ekle. Script içinde `Vector3.Lerp` veya `PingPong` ile iki nokta arasında gidip gelen hareket yaz.
-    3. **Dönen Çubuk (Rotating Bar):** Uzun ince bir küp (Scale X:5, Y:0.3, Z:0.3), `RotatingObstacle.cs` scripti ile `transform.Rotate()` kullanarak döndür.
-    4. **Yükselen-Alçalan Platform:** Dikey eksende (Y) hareket eden platform.
-    5. **Duvar (Tırmanma Engeli):** Yüksek bir küp, `Climbable` tag'ı ekle.
-    6. **İtici Engel (Pusher):** Yandan gelen ve karakteri iten bir obje.
-  - Her engeli oluşturduktan sonra Hierarchy'den `Assets/Prefabs/` klasörüne sürükle → Prefab olarak kaydedilir.
-  - **İpucu:** Prefab oluşturduktan sonra sahnede kopyalayarak (Ctrl+D) hızlıca çoğaltabilirsin.
+- [ ] **Engelleri "ObstacleCoursePack" paketinden seç ve ayarla**
+  - Project panelinde `Assets/ObstacleCoursePack/Prefabs/` (veya benzeri bir klasör) içindeki hazır engelleri (MovableWall, RotationPlat, Pendulum vb.) kullan.
+  - Eğer hazır objeler hareket etmiyorsa, daha önce yazdığımız `MovingPlatform.cs` veya `RotatingObstacle.cs` scriptlerini bu objelere ekleyerek ayarlarını yap.
+  - Tırmanma duvarı olarak kullanacağın objelere (örneğin yüksek duvarlar) **`Climbable`** tag'ını eklemeyi unutma.
 
 - [ ] **100 engeli parkura yerleştir**
   - Parkuru düz bir çizgi veya hafif kıvrımlı bir yol olarak tasarla.
-  - Her engeli sırayla yerleştir: Kolay → Orta → Zor şeklinde kademeli zorluk artışı yap.
-  - İlk 30 engel: Basit boşluklar ve sabit platformlar.
-  - 30-60 arası: Hareketli platformlar ve dönen engeller.
+  - Hazır prefabları sahneye sürükle ve **Ctrl+D** ile çoğaltarak diz.
+  - İlk 30 engel: Sabit platformlar, boşluklar ve basit engeller.
+  - 30-60 arası: `RotationPlat`, `MovableWall`, `Pendulum` gibi hareketli engeller.
   - 60-100 arası: Kombinasyonlar (dönen + hareketli + tırmanma).
-  - **Engel numaralandırma:** Her engel objesinin ismini "Obstacle_01", "Obstacle_02" ... "Obstacle_100" şeklinde yaz (Hierarchy'de düzenli görünsün).
+  - **İpucu:** Engeller arası mesafeyi 3-5 birim tut, çok uzak olmasın. Her engele `Obstacle_01`, `Obstacle_02` şeklinde isim ver.
 
 - [ ] **Bitiş çizgisini (Finish Line) ekle**
-  - 100. engelin ardına büyükçe bir platform koy.
-  - Üzerine bir Trigger Collider ekle (Box Collider → `Is Trigger` işaretle).
-  - Bu objeye `FinishLine` tag'ı ver. Oyuncu buraya geldiğinde oyun bitecek (GameManager üzerinden tetiklenecek).
-  - Görsel olarak bir banner/bayrak gibi bir şey koyabilirsin (basit bir quad + materyal ile).
+  - 100. engelin ardına büyük bir platform ve gösterişli bir hazır model ekle (örneğin bir kapı veya bayrak).
+  - Bu objeye bir Box Collider (veya uygun bir collider) ekle ve `Is Trigger` işaretle.
+  - Tag olarak `FinishLine` ver.
+  - Objeye `FinishLineTrigger` scriptini ekle. Oyuncu buraya geldiğinde oyun bitecek.
 
 ---
 
