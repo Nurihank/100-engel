@@ -41,15 +41,26 @@ public class FinishUI : MonoBehaviour
     /// <param name="time">Tamamlanan süre (saniye)</param>
     public void ShowFinishScreen(float time)
     {
+        Debug.Log("ShowFinishScreen çağrıldı.");
+
         if (finishPanel != null)
         {
             finishPanel.SetActive(true);
+            Debug.Log("finishPanel SetActive(true) yapıldı.");
+        }
+        else
+        {
+            Debug.LogError("FinishUI: finishPanel referansı atanmamış! Inspector'da FinishUI üzerindeki Finish Panel alanını doldurun.");
         }
 
         // Süreyi göster
         if (timeText != null)
         {
             timeText.text = "Süren: " + TimerManager.FormatTime(time);
+        }
+        else
+        {
+            Debug.LogWarning("FinishUI: timeText atanmamış.");
         }
 
         // En iyi süreyi göster

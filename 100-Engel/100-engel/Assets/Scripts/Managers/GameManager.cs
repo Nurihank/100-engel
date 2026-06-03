@@ -73,12 +73,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void FinishGame()
     {
+        if (currentState == GameState.Finished) return; // Çift tetiklenmeyi önle
         currentState = GameState.Finished;
 
         // Timer'ı durdur
         if (TimerManager.Instance != null)
         {
             TimerManager.Instance.StopTimer();
+        }
+        else
+        {
+            Debug.LogWarning("FinishGame: TimerManager bulunamadı!");
         }
 
         // Süreyi kaydet
@@ -87,18 +92,27 @@ public class GameManager : MonoBehaviour
         {
             ScoreManager.Instance.SaveBestTime(finalTime);
         }
-
-        // Bitiş ekranını göster
-        if (finishUI != null)
+        else
         {
-            finishUI.ShowFinishScreen(finalTime);
+            Debug.LogWarning("FinishGame: ScoreManager bulunamadı!");
         }
 
         // Fare imlecini serbest bırak (butonlara tıklayabilsin)
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Oyunu duraklat (UI butonları yine çalışır çünkü unscaledTime kullanırlar)
+        // Bitiş ekranını göster
+        if (finishUI != null)
+        {
+            finishUI.ShowFinishScreen(finalTime);
+        }
+        else
+        {
+            Debug.LogError("FinishGame: finishUI referansı atanmamış! Inspector'da GameManager objesine FinishUI sürükleyin.");
+        }
+
+        // Oyunu duraklat - Time.timeScale=0 yapıyoruz ama UI butonları çalışır
+        // Çünkü Button.OnClick() timeScale'den bağımsız çalışır
         Time.timeScale = 0f;
 
         Debug.Log("Oyun bitti! Süre: " + TimerManager.FormatTime(finalTime));

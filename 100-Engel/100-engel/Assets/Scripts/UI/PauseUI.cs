@@ -21,6 +21,10 @@ public class PauseUI : MonoBehaviour
 
     void Update()
     {
+        // Oyun bittiyse ESC ile pause açma
+        if (GameManager.Instance != null && GameManager.Instance.currentState == GameManager.GameState.Finished)
+            return;
+
         // ESC tuşuna basıldığında oyunu duraklat veya devam ettir
         if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance != null)
         {
